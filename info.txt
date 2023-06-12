@@ -1,0 +1,82 @@
+dev@dev-machine:/home/developer/golang-ninja$ go run main.go 
+Hello world!
+dev@dev-machine:/home/developer/golang-ninja$ go build main.go 
+dev@dev-machine:/home/developer/golang-ninja$ ./main 
+Hello world!
+dev@dev-machine:/home/developer/golang-ninja$ 
+
+
+Download
+go get .....
+
+
+Download from go.mod
+go mod download
+
+
+
+
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ go run -race main.go 
+==================
+WARNING: DATA RACE
+Read at 0x00c000018118 by goroutine 8:
+  main.main.func1()
+      /home/developer/golang-ninja/race_condition/main.go:12 +0x30
+
+Previous write at 0x00c000018118 by goroutine 7:
+  main.main.func1()
+      /home/developer/golang-ninja/race_condition/main.go:12 +0x44
+
+Goroutine 8 (running) created at:
+  main.main()
+      /home/developer/golang-ninja/race_condition/main.go:11 +0x4f
+
+Goroutine 7 (finished) created at:
+  main.main()
+      /home/developer/golang-ninja/race_condition/main.go:11 +0x4f
+==================
+998
+Found 1 data race(s)
+exit status 66
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ 
+
+
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ go run -race main.go 
+1000
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ go run main.go 
+1000
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ go run -race main.go 
+1000
+dev@dev-machine:/home/developer/golang-ninja/race_condition$ go run -race main.go 
+1000
+
+
+docker run -d --name ninja-db -e POSTGRES_PASSWORD=goLANGn1nja -v ${HOME}/pgdata/:/var/lib/postgresql/data -p 5432:5432 postgres
+
+postgres=# create table users (
+id serial not null unique,
+name varchar(255) not null,
+email varchar(255) not null,
+password varchar(255) not null,
+registered_at timestamp not null
+);
+CREATE TABLE
+
+dev@dev-machine:/home/developer/golang-ninja$ docker exec -it ninja-db bash
+root@7332fba1d5b9:/# psql -U postgres
+psql (15.3 (Debian 15.3-1.pgdg110+1))
+Type "help" for help.
+
+alter table users drop column registered_at;
+alter table users add column registered_at timestamp not null default now();
+
+insert into users(name, email, password) values ('Вася', 'vasya@mail.ru', 'qqqqwwwee');
+
+
+create table logs (
+id serial not null unique,
+entity varchar(255) not null,
+action varchar(255) not null,
+time timestamp not null default now()
+);
+
